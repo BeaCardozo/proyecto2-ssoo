@@ -57,11 +57,28 @@ public class MainView extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         AllocationJTable = new javax.swing.JTable();
         ControlPanel = new javax.swing.JPanel();
-        jSeparator1 = new javax.swing.JSeparator();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        jLabel1 = new javax.swing.JLabel();
+        jSeparator2 = new javax.swing.JSeparator();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        CreateElementButton = new javax.swing.JButton();
+        UpdateElementButton = new javax.swing.JButton();
+        DeleteElementButton = new javax.swing.JButton();
+        ObjectTypeComboBox = new javax.swing.JComboBox<>();
+        ObjectNameTextField = new javax.swing.JTextField();
+        ObjectSizeTextField = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        SelectedObjectTypeTextField = new javax.swing.JTextField();
+        SelectedObjectSizeTextField = new javax.swing.JTextField();
+        SelectedObjectNameTextField = new javax.swing.JTextField();
         DiskStatusAreaPanel = new javax.swing.JPanel();
         DetailsAreaPanel = new javax.swing.JPanel();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -128,17 +145,76 @@ public class MainView extends javax.swing.JFrame {
         ControlPanel.setBackground(new java.awt.Color(255, 255, 255));
         ControlPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Control Panel", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Geeza Pro", 3, 13))); // NOI18N
         ControlPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        ControlPanel.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 710, 10));
 
-        ModeButtonGroup.add(jRadioButton1);
-        jRadioButton1.setText("Administrator Mode");
-        ControlPanel.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 20, -1, -1));
+        jLabel1.setFont(new java.awt.Font("Geeza Pro", 3, 12)); // NOI18N
+        jLabel1.setText("CREATE");
+        ControlPanel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 250, -1));
 
-        ModeButtonGroup.add(jRadioButton2);
-        jRadioButton2.setText("User Mode");
-        ControlPanel.add(jRadioButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 20, -1, -1));
+        jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        ControlPanel.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 20, 20, 190));
 
-        MainPanel.add(ControlPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 240, 790, 240));
+        jLabel2.setFont(new java.awt.Font("Geeza Pro", 3, 12)); // NOI18N
+        jLabel2.setText("READ, UPDATE & DELETE");
+        ControlPanel.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 20, 320, -1));
+
+        jLabel4.setFont(new java.awt.Font("Geneva", 2, 13)); // NOI18N
+        jLabel4.setText("Select an Object type:");
+        ControlPanel.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 170, -1));
+
+        jLabel5.setFont(new java.awt.Font("Geneva", 2, 13)); // NOI18N
+        jLabel5.setText("Object Name:");
+        ControlPanel.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 90, -1, -1));
+
+        jLabel6.setFont(new java.awt.Font("Geneva", 2, 13)); // NOI18N
+        jLabel6.setText("Object Size:");
+        ControlPanel.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 140, -1, -1));
+
+        CreateElementButton.setBackground(new java.awt.Color(0, 204, 0));
+        CreateElementButton.setFont(new java.awt.Font("Geneva", 1, 11)); // NOI18N
+        CreateElementButton.setForeground(new java.awt.Color(255, 255, 255));
+        CreateElementButton.setText("Create");
+        CreateElementButton.setBorderPainted(false);
+        CreateElementButton.setOpaque(true);
+        ControlPanel.add(CreateElementButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 190, 150, 30));
+
+        UpdateElementButton.setBackground(new java.awt.Color(153, 153, 255));
+        UpdateElementButton.setFont(new java.awt.Font("Geneva", 1, 11)); // NOI18N
+        UpdateElementButton.setForeground(new java.awt.Color(255, 255, 255));
+        UpdateElementButton.setText("Update");
+        UpdateElementButton.setBorderPainted(false);
+        UpdateElementButton.setOpaque(true);
+        ControlPanel.add(UpdateElementButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 190, 160, 30));
+
+        DeleteElementButton.setBackground(new java.awt.Color(204, 0, 51));
+        DeleteElementButton.setFont(new java.awt.Font("Geneva", 1, 11)); // NOI18N
+        DeleteElementButton.setForeground(new java.awt.Color(255, 255, 255));
+        DeleteElementButton.setText("Delete");
+        DeleteElementButton.setBorderPainted(false);
+        DeleteElementButton.setOpaque(true);
+        ControlPanel.add(DeleteElementButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 190, 150, 30));
+
+        ObjectTypeComboBox.setFont(new java.awt.Font("Geneva", 0, 13)); // NOI18N
+        ObjectTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "File", "Directory" }));
+        ControlPanel.add(ObjectTypeComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 60, 250, -1));
+        ControlPanel.add(ObjectNameTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 110, 250, -1));
+        ControlPanel.add(ObjectSizeTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, 250, -1));
+
+        jLabel7.setFont(new java.awt.Font("Geneva", 2, 13)); // NOI18N
+        jLabel7.setText("Selected Object Type:");
+        ControlPanel.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 40, 170, -1));
+
+        jLabel8.setFont(new java.awt.Font("Geneva", 2, 13)); // NOI18N
+        jLabel8.setText("Selected Object Name:");
+        ControlPanel.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 90, -1, -1));
+
+        jLabel9.setFont(new java.awt.Font("Geneva", 2, 13)); // NOI18N
+        jLabel9.setText("Selected Object Size:");
+        ControlPanel.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 140, -1, -1));
+        ControlPanel.add(SelectedObjectTypeTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 60, 250, -1));
+        ControlPanel.add(SelectedObjectSizeTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 160, 250, -1));
+        ControlPanel.add(SelectedObjectNameTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 110, 250, -1));
+
+        MainPanel.add(ControlPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 230, 790, 240));
 
         DiskStatusAreaPanel.setBackground(new java.awt.Color(255, 255, 255));
         DiskStatusAreaPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Disk Status Area", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Geeza Pro", 3, 13))); // NOI18N
@@ -156,10 +232,18 @@ public class MainView extends javax.swing.JFrame {
         );
         DetailsAreaPanelLayout.setVerticalGroup(
             DetailsAreaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 194, Short.MAX_VALUE)
+            .addGap(0, 144, Short.MAX_VALUE)
         );
 
-        MainPanel.add(DetailsAreaPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 490, 790, 220));
+        MainPanel.add(DetailsAreaPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 480, 790, 170));
+
+        ModeButtonGroup.add(jRadioButton1);
+        jRadioButton1.setText("Administrator Mode");
+        MainPanel.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 670, -1, -1));
+
+        ModeButtonGroup.add(jRadioButton2);
+        jRadioButton2.setText("User Mode");
+        MainPanel.add(jRadioButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 670, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -180,6 +264,8 @@ public class MainView extends javax.swing.JFrame {
     public javax.swing.JTable AllocationJTable;
     private javax.swing.JButton ClearJTreeButton;
     private javax.swing.JPanel ControlPanel;
+    private javax.swing.JButton CreateElementButton;
+    private javax.swing.JButton DeleteElementButton;
     private javax.swing.JPanel DetailsAreaPanel;
     private javax.swing.JPanel DiskStatusAreaPanel;
     private javax.swing.JPanel FileAllocationTablePanel;
@@ -187,12 +273,27 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JButton LoadTxtButton;
     private javax.swing.JPanel MainPanel;
     private javax.swing.ButtonGroup ModeButtonGroup;
+    private javax.swing.JTextField ObjectNameTextField;
+    private javax.swing.JTextField ObjectSizeTextField;
+    private javax.swing.JComboBox<String> ObjectTypeComboBox;
     private javax.swing.JButton SaveTxtFile;
+    private javax.swing.JTextField SelectedObjectNameTextField;
+    private javax.swing.JTextField SelectedObjectSizeTextField;
+    private javax.swing.JTextField SelectedObjectTypeTextField;
     private javax.swing.JTree StructureJTree;
+    private javax.swing.JButton UpdateElementButton;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
     // End of variables declaration//GEN-END:variables
 }
