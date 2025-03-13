@@ -7,9 +7,9 @@ package com.mycompany.proyecto2;
 
 public class FileSystem {
     private Directory[] directories;
-    private File[] files;
+    public File[] files;
     private StorageDisk storageDisk;
-    private int fileCount;
+    public int fileCount;
     private int dirCount;
 
     public FileSystem(int totalBlocks, int maxFiles, int maxDirectories) {
@@ -49,5 +49,27 @@ public class FileSystem {
             System.out.println("No se puede crear el directorio. Límite alcanzado.");
         }
     }
+    
+    public void deleteDirectory(String name) {
+        for (int i = 0; i < dirCount; i++) {
+            if (directories[i] != null && directories[i].getName().equals(name)) {
+                directories[i] = null; 
+                System.arraycopy(directories, i + 1, directories, i, dirCount - i - 1);
+                directories[--dirCount] = null;
+                System.out.println("Directorio " + name + " eliminado con éxito.");
+                return; 
+            }
+        }
+        System.out.println("Directorio no encontrado.");
+    }  
+    
+     public void clear() {
+        this.files = new File[files.length];
+        this.fileCount = 0;
+
+        this.directories = new Directory[directories.length];
+        this.dirCount = 0;
+    }
+
 }
 
