@@ -6,9 +6,9 @@ package com.mycompany.proyecto2;
  */
 public class Directory {
     private String name;
-    private Directory[] subdirectories; 
+    public Directory[] subdirectories; 
     private File[] files;
-    private int subDirCount; 
+    public int subDirCount; 
     private int fileCount; 
 
     public Directory(String name) {

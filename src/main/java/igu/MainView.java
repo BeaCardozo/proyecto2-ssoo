@@ -10,6 +10,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -61,6 +63,7 @@ public class MainView extends javax.swing.JFrame {
         setupJTreeSelectionListener();
         setupModeSelection();
         updateFieldsByComboBox();
+        appendToDetails("FileSystem successfully started | Date: " + getTimeStamp());
     }
     
     // Actualiza el estado de los bloques en el panel
@@ -74,6 +77,7 @@ public class MainView extends javax.swing.JFrame {
         treeModel.reload();
         StructureJTree.setModel(treeModel);
         fileSystem.clear();
+        appendToDetails("FileSystem & StorageDisk successfully cleaned | Date: " + getTimeStamp());
     }
     
     //Limpiar los campos
@@ -121,13 +125,15 @@ public class MainView extends javax.swing.JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 toggleControlPanel(true);
+                appendToDetails("Set to Administrator Mode | Date: " + getTimeStamp());
             }
         });
         
         UserModeRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                toggleControlPanel(false); 
+                toggleControlPanel(false);
+                appendToDetails("Set to User Mode | Date: " + getTimeStamp());
             }
         });
     }
@@ -197,6 +203,18 @@ public class MainView extends javax.swing.JFrame {
         }
     }
     
+    //Añadir texto al DetailsTextArea
+    public void appendToDetails(String text) {
+        DetailsTextArea.append(text + "\n"); // Añadir texto nuevo
+        DetailsTextArea.setCaretPosition(DetailsTextArea.getDocument().getLength()); // Desplazarse al final
+    }
+    
+    //TimeStamp
+    public String getTimeStamp() {
+        String timestamp = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").format(new Date());
+        return timestamp;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -238,8 +256,8 @@ public class MainView extends javax.swing.JFrame {
         SelectedObjectNameTextField = new javax.swing.JTextField();
         DiskStatusAreaPanel = new javax.swing.JPanel();
         DetailsAreaPanel = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        DetailsAreaScrollPanel = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        DetailsTextArea = new javax.swing.JTextArea();
         AdminModeRadioButton = new javax.swing.JRadioButton();
         UserModeRadioButton = new javax.swing.JRadioButton();
 
@@ -420,11 +438,13 @@ public class MainView extends javax.swing.JFrame {
         DetailsAreaPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Details Area", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Geeza Pro", 3, 13))); // NOI18N
         DetailsAreaPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        DetailsAreaScrollPanel.setBackground(new java.awt.Color(255, 255, 255));
-        DetailsAreaScrollPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jScrollPane2.setViewportView(DetailsAreaScrollPanel);
+        DetailsTextArea.setEditable(false);
+        DetailsTextArea.setColumns(20);
+        DetailsTextArea.setFont(new java.awt.Font("Geneva", 0, 13)); // NOI18N
+        DetailsTextArea.setRows(5);
+        jScrollPane4.setViewportView(DetailsTextArea);
 
-        DetailsAreaPanel.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 21, 770, 138));
+        DetailsAreaPanel.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 770, 140));
 
         MainPanel.add(DetailsAreaPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 480, 790, 170));
 
@@ -474,7 +494,6 @@ public class MainView extends javax.swing.JFrame {
         }
 
         String selectedType = ObjectTypeComboBox.getSelectedItem().toString(); 
-
         if (selectedType.equals("File")) {
             if (objectSizeText.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please fill all the fields!", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -495,7 +514,6 @@ public class MainView extends javax.swing.JFrame {
         }
         
         DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) StructureJTree.getLastSelectedPathComponent();
-    
         if (selectedNode == null || !(selectedNode.getUserObject() instanceof Directory)) {
             JOptionPane.showMessageDialog(this, "Please select a valid directory to add the object!", "Warning", JOptionPane.WARNING_MESSAGE);
             return;
@@ -508,6 +526,7 @@ public class MainView extends javax.swing.JFrame {
             selectedNode.add(newDirNode);
             currentDir.addDirectory(newDir);
             fileSystem.createDirectory(objectName);
+            appendToDetails("Directory " + objectName + "successfully created | Date: " + getTimeStamp());
         } 
         else if (selectedType.equals("File")) {
             if (objectSize > 0 && objectSize <= storage.getAvailableBlocks()) {
@@ -515,6 +534,7 @@ public class MainView extends javax.swing.JFrame {
                 selectedNode.add(new DefaultMutableTreeNode(newFile));
                 currentDir.addFile(newFile);
                 fileSystem.createFile(objectName, objectSize);
+               appendToDetails("File " + objectName + " (" + objectSize + " blocks) " + "successfully created | Date: " + getTimeStamp());
             } else {
                 JOptionPane.showMessageDialog(this, "StorageDisk does not have enough space to store this file", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -548,8 +568,8 @@ public class MainView extends javax.swing.JFrame {
                 fileSystem.deleteDirectory(currentName);
                 currentDir.setName(newName); 
                 fileSystem.createDirectory(currentDir.getName());
+                    appendToDetails("Directory " + currentName + " updated to Name: " + newName + " | Date: " + getTimeStamp());
                 selectedNode.setUserObject(currentDir); 
-                JOptionPane.showMessageDialog(this, "Directory name updated successfully!");
             } else if (isFile) {
                 if (sizeText.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Size cannot be empty for files.", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -564,8 +584,8 @@ public class MainView extends javax.swing.JFrame {
                     currentFile.setName(newName); 
                     currentFile.setSize(newSize); 
                     fileSystem.createFile(currentFile.getName(), currentFile.getSize());
+                    appendToDetails("File " + currentName + " updated to Name: " + newName + "; Size:" + newSize +" | Date: " + getTimeStamp());
                     selectedNode.setUserObject(currentFile); 
-                    JOptionPane.showMessageDialog(this, "File updated successfully!");
                 }
             }
 
@@ -587,22 +607,27 @@ public class MainView extends javax.swing.JFrame {
             if (confirm == JOptionPane.YES_OPTION) {
                 if (userObject instanceof Directory) {
                     Directory dirToDelete = (Directory) userObject;
-                    for (File file : dirToDelete.getFiles()) {
+                    for (int i = 0; i < fileSystem.fileCount; i++) {
+                        File file = fileSystem.files[i];
                         fileSystem.deleteFile(file.getName()); 
+                        appendToDetails("* The Child File "+ file.getName() + "has been deleted along with its parent directory | Date: " + getTimeStamp());
                     }
-                    for (Directory subDir : dirToDelete.getSubdirectories()) {
-                        //REVISAR AQUI
+                     for (int i = 0; i < dirToDelete.subDirCount; i++) {
+                        Directory subDir = dirToDelete.subdirectories[i];
                         fileSystem.deleteDirectory(subDir.getName());
+                        appendToDetails("* Subdirectory " + subDir.getName() + " successfully deleted | Date: " + getTimeStamp());
                     }
+                     
                     String currentName = dirToDelete.getName();
                     fileSystem.deleteDirectory(currentName);
+                    appendToDetails("Directory " + currentName + " successfully deleted | Date: " + getTimeStamp());
             } else {
                 File FileToDelete = (File) userObject;
                 fileSystem.deleteFile(FileToDelete.getName()); 
+                appendToDetails("Directory " + FileToDelete.getName() + "successfully deleted | Date: " + getTimeStamp());
             }
                 createAndShowTable();
                 ((DefaultTreeModel) StructureJTree.getModel()).removeNodeFromParent(selectedNode);
-                JOptionPane.showMessageDialog(this, "Item deleted successfully!");
                 treeModel.reload();
             }
         } else {
@@ -619,7 +644,7 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JButton CreateElementButton;
     private javax.swing.JButton DeleteElementButton;
     private javax.swing.JPanel DetailsAreaPanel;
-    private javax.swing.JPanel DetailsAreaScrollPanel;
+    private javax.swing.JTextArea DetailsTextArea;
     private javax.swing.JPanel DiskStatusAreaPanel;
     private javax.swing.JPanel FileAllocationTablePanel;
     private javax.swing.JPanel JTreePanel;
@@ -645,8 +670,8 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator2;
     // End of variables declaration//GEN-END:variables
 }

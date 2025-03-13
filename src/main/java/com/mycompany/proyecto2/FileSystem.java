@@ -6,11 +6,11 @@ package com.mycompany.proyecto2;
  */
 
 public class FileSystem {
-    private Directory[] directories;
+    public Directory[] directories;
     public File[] files;
     private StorageDisk storageDisk;
     public int fileCount;
-    private int dirCount;
+    public int dirCount;
 
     public FileSystem(int totalBlocks, int maxFiles, int maxDirectories) {
         this.directories = new Directory[maxDirectories];
