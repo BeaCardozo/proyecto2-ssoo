@@ -23,13 +23,126 @@ public class MainView extends javax.swing.JFrame {
     private void initComponents() {
 
         MainPanel = new javax.swing.JPanel();
+        JTreePanel = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        StructureJTree = new javax.swing.JTree();
+        SaveTxtFile = new javax.swing.JButton();
+        ClearJTreeButton = new javax.swing.JButton();
+        LoadTxtButton = new javax.swing.JButton();
+        FileAllocationTablePanel = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        AllocationJTable = new javax.swing.JTable();
+        ControlPanel = new javax.swing.JPanel();
+        DiskStatusAreaPanel = new javax.swing.JPanel();
+        DetailsAreaPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1300, 725));
         setResizable(false);
 
         MainPanel.setBackground(new java.awt.Color(255, 255, 255));
         MainPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        JTreePanel.setBackground(new java.awt.Color(255, 255, 255));
+        JTreePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "File and Directory Structure", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Geeza Pro", 3, 13))); // NOI18N
+        JTreePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jScrollPane1.setViewportView(StructureJTree);
+
+        JTreePanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 370, 340));
+
+        SaveTxtFile.setBackground(new java.awt.Color(169, 217, 241));
+        SaveTxtFile.setFont(new java.awt.Font("Geneva", 1, 11)); // NOI18N
+        SaveTxtFile.setText("Save to TXT");
+        SaveTxtFile.setBorderPainted(false);
+        SaveTxtFile.setOpaque(true);
+        JTreePanel.add(SaveTxtFile, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 380, 120, 30));
+
+        ClearJTreeButton.setBackground(new java.awt.Color(204, 0, 0));
+        ClearJTreeButton.setFont(new java.awt.Font("Geneva", 1, 11)); // NOI18N
+        ClearJTreeButton.setForeground(new java.awt.Color(255, 255, 255));
+        ClearJTreeButton.setText("Clear");
+        ClearJTreeButton.setBorderPainted(false);
+        ClearJTreeButton.setOpaque(true);
+        JTreePanel.add(ClearJTreeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 380, 110, 30));
+
+        LoadTxtButton.setBackground(new java.awt.Color(169, 217, 241));
+        LoadTxtButton.setFont(new java.awt.Font("Geneva", 1, 11)); // NOI18N
+        LoadTxtButton.setText("Load TXT");
+        LoadTxtButton.setBorderPainted(false);
+        LoadTxtButton.setOpaque(true);
+        JTreePanel.add(LoadTxtButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 380, 120, 30));
+
+        MainPanel.add(JTreePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 410, 430));
+
+        FileAllocationTablePanel.setBackground(new java.awt.Color(255, 255, 255));
+        FileAllocationTablePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "File Allocation Table", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Geeza Pro", 3, 13))); // NOI18N
+        FileAllocationTablePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        AllocationJTable.setAutoCreateRowSorter(true);
+        AllocationJTable.setFont(new java.awt.Font("Geneva", 1, 12)); // NOI18N
+        AllocationJTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Color", "File Name", "Asigned Blocks", "First Block Direction"
+            }
+        ));
+        AllocationJTable.setSelectionBackground(new java.awt.Color(169, 217, 241));
+        AllocationJTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane3.setViewportView(AllocationJTable);
+
+        FileAllocationTablePanel.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 770, 160));
+
+        MainPanel.add(FileAllocationTablePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 10, 840, 210));
+
+        ControlPanel.setBackground(new java.awt.Color(255, 255, 255));
+        ControlPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Control Panel", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Geeza Pro", 3, 13))); // NOI18N
+
+        javax.swing.GroupLayout ControlPanelLayout = new javax.swing.GroupLayout(ControlPanel);
+        ControlPanel.setLayout(ControlPanelLayout);
+        ControlPanelLayout.setHorizontalGroup(
+            ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 830, Short.MAX_VALUE)
+        );
+        ControlPanelLayout.setVerticalGroup(
+            ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 174, Short.MAX_VALUE)
+        );
+
+        MainPanel.add(ControlPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 240, 840, 200));
+
+        DiskStatusAreaPanel.setBackground(new java.awt.Color(255, 255, 255));
+        DiskStatusAreaPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Disk Status Area", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Geeza Pro", 3, 13))); // NOI18N
+
+        javax.swing.GroupLayout DiskStatusAreaPanelLayout = new javax.swing.GroupLayout(DiskStatusAreaPanel);
+        DiskStatusAreaPanel.setLayout(DiskStatusAreaPanelLayout);
+        DiskStatusAreaPanelLayout.setHorizontalGroup(
+            DiskStatusAreaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        DiskStatusAreaPanelLayout.setVerticalGroup(
+            DiskStatusAreaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 204, Short.MAX_VALUE)
+        );
+
+        MainPanel.add(DiskStatusAreaPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 450, 410, 230));
+
+        DetailsAreaPanel.setBackground(new java.awt.Color(255, 255, 255));
+        DetailsAreaPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Details Area", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Geeza Pro", 3, 13))); // NOI18N
+
+        javax.swing.GroupLayout DetailsAreaPanelLayout = new javax.swing.GroupLayout(DetailsAreaPanel);
+        DetailsAreaPanel.setLayout(DetailsAreaPanelLayout);
+        DetailsAreaPanelLayout.setHorizontalGroup(
+            DetailsAreaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 830, Short.MAX_VALUE)
+        );
+        DetailsAreaPanelLayout.setVerticalGroup(
+            DetailsAreaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 204, Short.MAX_VALUE)
+        );
+
+        MainPanel.add(DetailsAreaPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 450, 840, 230));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -39,48 +152,26 @@ public class MainView extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(MainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 725, Short.MAX_VALUE)
+            .addComponent(MainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MainView().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JTable AllocationJTable;
+    private javax.swing.JButton ClearJTreeButton;
+    private javax.swing.JPanel ControlPanel;
+    private javax.swing.JPanel DetailsAreaPanel;
+    private javax.swing.JPanel DiskStatusAreaPanel;
+    private javax.swing.JPanel FileAllocationTablePanel;
+    private javax.swing.JPanel JTreePanel;
+    private javax.swing.JButton LoadTxtButton;
     private javax.swing.JPanel MainPanel;
+    private javax.swing.JButton SaveTxtFile;
+    private javax.swing.JTree StructureJTree;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane3;
     // End of variables declaration//GEN-END:variables
 }

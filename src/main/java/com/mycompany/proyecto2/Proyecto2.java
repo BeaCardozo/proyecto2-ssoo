@@ -1,5 +1,7 @@
 package com.mycompany.proyecto2;
 
+import igu.MainView;
+
 /**
  *
  * @author beacardozo
@@ -7,6 +9,8 @@ package com.mycompany.proyecto2;
 public class Proyecto2 {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        MainView mainView = new MainView();
+        mainView.setVisible(true);
+        mainView.setLocationRelativeTo(null);
     }
 }
