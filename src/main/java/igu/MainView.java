@@ -1,18 +1,42 @@
 package igu;
 
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 /**
  *
  * @author beacardozo
  */
 public class MainView extends javax.swing.JFrame {
+    private JFrame frame;
+    private SDBlockPanel sdBlocksPanel; // El panel que contiene los bloques
+      private JPanel diskStatusArea; // Este es el panel que ya tienes en tu diseño
+    private boolean[] blocks; // Estado del disco
 
     /**
      * Creates new form MainView
      */
     public MainView() {
         initComponents();
-    }
 
+        blocks = new boolean[64];
+        for (int i = 0; i < blocks.length; i++) {
+            blocks[i] = false; 
+        }
+        
+        sdBlocksPanel = new SDBlockPanel(blocks); 
+        diskStatusArea = DiskStatusAreaPanel; 
+        diskStatusArea.setLayout(new BorderLayout()); 
+        diskStatusArea.add(sdBlocksPanel, BorderLayout.CENTER); 
+        pack();
+        setVisible(true);
+    }
+    
+    // Actualiza el estado de los bloques en el panel
+    public void updateDiskStatus(boolean[] newBlocks) {
+        sdBlocksPanel.updateBlocks(newBlocks); 
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,6 +64,7 @@ public class MainView extends javax.swing.JFrame {
         setResizable(false);
 
         MainPanel.setBackground(new java.awt.Color(255, 255, 255));
+        MainPanel.setMinimumSize(new java.awt.Dimension(1300, 725));
         MainPanel.setPreferredSize(new java.awt.Dimension(1300, 725));
         MainPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -49,14 +74,14 @@ public class MainView extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(StructureJTree);
 
-        JTreePanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 370, 340));
+        JTreePanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 420, 220));
 
         SaveTxtFile.setBackground(new java.awt.Color(169, 217, 241));
         SaveTxtFile.setFont(new java.awt.Font("Geneva", 1, 11)); // NOI18N
         SaveTxtFile.setText("Save to TXT");
         SaveTxtFile.setBorderPainted(false);
         SaveTxtFile.setOpaque(true);
-        JTreePanel.add(SaveTxtFile, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 380, 120, 30));
+        JTreePanel.add(SaveTxtFile, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 270, 120, 30));
 
         ClearJTreeButton.setBackground(new java.awt.Color(204, 0, 0));
         ClearJTreeButton.setFont(new java.awt.Font("Geneva", 1, 11)); // NOI18N
@@ -64,16 +89,16 @@ public class MainView extends javax.swing.JFrame {
         ClearJTreeButton.setText("Clear");
         ClearJTreeButton.setBorderPainted(false);
         ClearJTreeButton.setOpaque(true);
-        JTreePanel.add(ClearJTreeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 380, 110, 30));
+        JTreePanel.add(ClearJTreeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 270, 110, 30));
 
         LoadTxtButton.setBackground(new java.awt.Color(169, 217, 241));
         LoadTxtButton.setFont(new java.awt.Font("Geneva", 1, 11)); // NOI18N
         LoadTxtButton.setText("Load TXT");
         LoadTxtButton.setBorderPainted(false);
         LoadTxtButton.setOpaque(true);
-        JTreePanel.add(LoadTxtButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 380, 120, 30));
+        JTreePanel.add(LoadTxtButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, 120, 30));
 
-        MainPanel.add(JTreePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 410, 430));
+        MainPanel.add(JTreePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 460, 320));
 
         FileAllocationTablePanel.setBackground(new java.awt.Color(255, 255, 255));
         FileAllocationTablePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "File Allocation Table", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Geeza Pro", 3, 13))); // NOI18N
@@ -93,9 +118,9 @@ public class MainView extends javax.swing.JFrame {
         AllocationJTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane3.setViewportView(AllocationJTable);
 
-        FileAllocationTablePanel.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 770, 160));
+        FileAllocationTablePanel.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 730, 160));
 
-        MainPanel.add(FileAllocationTablePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 10, 840, 210));
+        MainPanel.add(FileAllocationTablePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 10, 790, 210));
 
         ControlPanel.setBackground(new java.awt.Color(255, 255, 255));
         ControlPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Control Panel", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Geeza Pro", 3, 13))); // NOI18N
@@ -104,30 +129,19 @@ public class MainView extends javax.swing.JFrame {
         ControlPanel.setLayout(ControlPanelLayout);
         ControlPanelLayout.setHorizontalGroup(
             ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 830, Short.MAX_VALUE)
+            .addGap(0, 780, Short.MAX_VALUE)
         );
         ControlPanelLayout.setVerticalGroup(
             ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 174, Short.MAX_VALUE)
         );
 
-        MainPanel.add(ControlPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 240, 840, 200));
+        MainPanel.add(ControlPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 240, 790, 200));
 
         DiskStatusAreaPanel.setBackground(new java.awt.Color(255, 255, 255));
         DiskStatusAreaPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Disk Status Area", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Geeza Pro", 3, 13))); // NOI18N
-
-        javax.swing.GroupLayout DiskStatusAreaPanelLayout = new javax.swing.GroupLayout(DiskStatusAreaPanel);
-        DiskStatusAreaPanel.setLayout(DiskStatusAreaPanelLayout);
-        DiskStatusAreaPanelLayout.setHorizontalGroup(
-            DiskStatusAreaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        DiskStatusAreaPanelLayout.setVerticalGroup(
-            DiskStatusAreaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 234, Short.MAX_VALUE)
-        );
-
-        MainPanel.add(DiskStatusAreaPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 450, 410, 260));
+        DiskStatusAreaPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        MainPanel.add(DiskStatusAreaPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 350, 460, 360));
 
         DetailsAreaPanel.setBackground(new java.awt.Color(255, 255, 255));
         DetailsAreaPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Details Area", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Geeza Pro", 3, 13))); // NOI18N
@@ -136,14 +150,14 @@ public class MainView extends javax.swing.JFrame {
         DetailsAreaPanel.setLayout(DetailsAreaPanelLayout);
         DetailsAreaPanelLayout.setHorizontalGroup(
             DetailsAreaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 830, Short.MAX_VALUE)
+            .addGap(0, 780, Short.MAX_VALUE)
         );
         DetailsAreaPanelLayout.setVerticalGroup(
             DetailsAreaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 234, Short.MAX_VALUE)
         );
 
-        MainPanel.add(DetailsAreaPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 450, 840, 260));
+        MainPanel.add(DetailsAreaPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 450, 790, 260));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
