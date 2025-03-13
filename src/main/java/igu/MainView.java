@@ -40,6 +40,7 @@ public class MainView extends javax.swing.JFrame {
         setResizable(false);
 
         MainPanel.setBackground(new java.awt.Color(255, 255, 255));
+        MainPanel.setPreferredSize(new java.awt.Dimension(1300, 725));
         MainPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         JTreePanel.setBackground(new java.awt.Color(255, 255, 255));
@@ -123,10 +124,10 @@ public class MainView extends javax.swing.JFrame {
         );
         DiskStatusAreaPanelLayout.setVerticalGroup(
             DiskStatusAreaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 204, Short.MAX_VALUE)
+            .addGap(0, 234, Short.MAX_VALUE)
         );
 
-        MainPanel.add(DiskStatusAreaPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 450, 410, 230));
+        MainPanel.add(DiskStatusAreaPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 450, 410, 260));
 
         DetailsAreaPanel.setBackground(new java.awt.Color(255, 255, 255));
         DetailsAreaPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Details Area", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Geeza Pro", 3, 13))); // NOI18N
@@ -139,16 +140,16 @@ public class MainView extends javax.swing.JFrame {
         );
         DetailsAreaPanelLayout.setVerticalGroup(
             DetailsAreaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 204, Short.MAX_VALUE)
+            .addGap(0, 234, Short.MAX_VALUE)
         );
 
-        MainPanel.add(DetailsAreaPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 450, 840, 230));
+        MainPanel.add(DetailsAreaPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 450, 840, 260));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(MainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1300, Short.MAX_VALUE)
+            .addComponent(MainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
