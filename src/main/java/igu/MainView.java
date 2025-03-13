@@ -9,9 +9,8 @@ import javax.swing.JPanel;
  * @author beacardozo
  */
 public class MainView extends javax.swing.JFrame {
-    private JFrame frame;
     private SDBlockPanel sdBlocksPanel; // El panel que contiene los bloques
-      private JPanel diskStatusArea; // Este es el panel que ya tienes en tu diseño
+     private JPanel diskStatusArea; 
     private boolean[] blocks; // Estado del disco
 
     /**
@@ -46,6 +45,7 @@ public class MainView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        ModeButtonGroup = new javax.swing.ButtonGroup();
         MainPanel = new javax.swing.JPanel();
         JTreePanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -57,6 +57,9 @@ public class MainView extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         AllocationJTable = new javax.swing.JTable();
         ControlPanel = new javax.swing.JPanel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
         DiskStatusAreaPanel = new javax.swing.JPanel();
         DetailsAreaPanel = new javax.swing.JPanel();
 
@@ -124,19 +127,18 @@ public class MainView extends javax.swing.JFrame {
 
         ControlPanel.setBackground(new java.awt.Color(255, 255, 255));
         ControlPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Control Panel", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Geeza Pro", 3, 13))); // NOI18N
+        ControlPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        ControlPanel.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 710, 10));
 
-        javax.swing.GroupLayout ControlPanelLayout = new javax.swing.GroupLayout(ControlPanel);
-        ControlPanel.setLayout(ControlPanelLayout);
-        ControlPanelLayout.setHorizontalGroup(
-            ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 780, Short.MAX_VALUE)
-        );
-        ControlPanelLayout.setVerticalGroup(
-            ControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 174, Short.MAX_VALUE)
-        );
+        ModeButtonGroup.add(jRadioButton1);
+        jRadioButton1.setText("Administrator Mode");
+        ControlPanel.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 20, -1, -1));
 
-        MainPanel.add(ControlPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 240, 790, 200));
+        ModeButtonGroup.add(jRadioButton2);
+        jRadioButton2.setText("User Mode");
+        ControlPanel.add(jRadioButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 20, -1, -1));
+
+        MainPanel.add(ControlPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 240, 790, 240));
 
         DiskStatusAreaPanel.setBackground(new java.awt.Color(255, 255, 255));
         DiskStatusAreaPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Disk Status Area", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Geeza Pro", 3, 13))); // NOI18N
@@ -154,10 +156,10 @@ public class MainView extends javax.swing.JFrame {
         );
         DetailsAreaPanelLayout.setVerticalGroup(
             DetailsAreaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 234, Short.MAX_VALUE)
+            .addGap(0, 194, Short.MAX_VALUE)
         );
 
-        MainPanel.add(DetailsAreaPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 450, 790, 260));
+        MainPanel.add(DetailsAreaPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 490, 790, 220));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -184,9 +186,13 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JPanel JTreePanel;
     private javax.swing.JButton LoadTxtButton;
     private javax.swing.JPanel MainPanel;
+    private javax.swing.ButtonGroup ModeButtonGroup;
     private javax.swing.JButton SaveTxtFile;
     private javax.swing.JTree StructureJTree;
+    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
 }
