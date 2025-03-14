@@ -610,9 +610,9 @@ public class MainView extends javax.swing.JFrame {
                     for (int i = 0; i < fileSystem.fileCount; i++) {
                         File file = fileSystem.files[i];
                         fileSystem.deleteFile(file.getName()); 
-                        appendToDetails("* The Child File "+ file.getName() + "has been deleted along with its parent directory | Date: " + getTimeStamp());
+                        appendToDetails("* The Child File "+ file.getName() + " has been deleted along with its parent directory | Date: " + getTimeStamp());
                     }
-                     for (int i = 0; i < dirToDelete.subDirCount; i++) {
+                    for (int i = 0; i < dirToDelete.subDirCount; i++) {
                         Directory subDir = dirToDelete.subdirectories[i];
                         fileSystem.deleteDirectory(subDir.getName());
                         appendToDetails("* Subdirectory " + subDir.getName() + " successfully deleted | Date: " + getTimeStamp());
@@ -624,7 +624,7 @@ public class MainView extends javax.swing.JFrame {
             } else {
                 File FileToDelete = (File) userObject;
                 fileSystem.deleteFile(FileToDelete.getName()); 
-                appendToDetails("Directory " + FileToDelete.getName() + "successfully deleted | Date: " + getTimeStamp());
+                appendToDetails("File " + FileToDelete.getName() + " successfully deleted | Date: " + getTimeStamp());
             }
                 createAndShowTable();
                 ((DefaultTreeModel) StructureJTree.getModel()).removeNodeFromParent(selectedNode);

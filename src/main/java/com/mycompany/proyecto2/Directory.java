@@ -9,7 +9,7 @@ public class Directory {
     public Directory[] subdirectories; 
     private File[] files;
     public int subDirCount; 
-    private int fileCount; 
+    public int fileCount; 
 
     public Directory(String name) {
         this.name = name;
