@@ -9,6 +9,9 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.BorderFactory;
@@ -232,6 +235,44 @@ public class MainView extends javax.swing.JFrame {
         return timestamp;
     }
     
+    //Guadar en TXT
+   public void saveTreeToTXT(Object node, String filePath, String indent) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            saveNodeToTXT(node, writer, indent);
+            System.out.println("Estructura guardada en " + filePath); 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+   public void saveNodeToTXT(Object node, BufferedWriter writer, String indent) throws IOException {
+        DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) node;
+        Object userObject = treeNode.getUserObject();
+
+        if (userObject instanceof File) {
+            File file = (File) userObject;
+            writer.write(indent + "Name: " + file.getName() + 
+                     ", Size: " + file.getSize() + 
+                     ", Color: " + file.getFileColor().toString() +
+                     ", type: file");
+        } else if (userObject instanceof Directory) {
+            Directory directory = (Directory) userObject;
+            writer.write(indent + "Name: " + directory.getName() + "/" +
+                       ", type: directory");
+        }
+        writer.newLine();
+
+        for (int i = 0; i < treeNode.getChildCount(); i++) {
+            saveNodeToTXT(treeNode.getChildAt(i), writer, indent + "  ");
+        }
+    }
+   
+   
+   //Leer desde un TXT
+    
+    
+
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -299,6 +340,11 @@ public class MainView extends javax.swing.JFrame {
         SaveTxtFile.setText("Save to TXT");
         SaveTxtFile.setBorderPainted(false);
         SaveTxtFile.setOpaque(true);
+        SaveTxtFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SaveTxtFileActionPerformed(evt);
+            }
+        });
         JTreePanel.add(SaveTxtFile, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 270, 120, 30));
 
         ClearJTreeButton.setBackground(new java.awt.Color(204, 0, 0));
@@ -695,6 +741,12 @@ public class MainView extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Please select a valid object to delete.", "Warning", JOptionPane.WARNING_MESSAGE);
     }
     }//GEN-LAST:event_DeleteElementButtonActionPerformed
+
+    private void SaveTxtFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveTxtFileActionPerformed
+        String filename = System.getProperty("user.dir") + "/fileSystem_results.txt";
+        saveTreeToTXT(StructureJTree.getModel().getRoot(), filename, "");
+        JOptionPane.showMessageDialog(null, "Structure saved in " + filename, "Save Confirmation", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_SaveTxtFileActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
