@@ -1,5 +1,5 @@
 package com.mycompany.proyecto2;
-
+import java.awt.Color;
 /**
  *
  * @author beacardozo
@@ -20,19 +20,19 @@ public class FileSystem {
         this.dirCount = 0;
     }
 
-    public void createFile(String name, int size) {
-        if (fileCount < files.length && storageDisk.allocateBlocks(size)) {
-            File newFile = new File(name, size, storageDisk.getFirstBlock());
-            files[fileCount++] = newFile; // Agregar archivo y aumentar el conteo
-        } else {
-            System.out.println("Espacio insuficiente o límite de archivos alcanzado.");
-        }
+    public void createFile(Directory directory,String name, int size, int firstBlock, Color color) {
+    if (fileCount < files.length && storageDisk.allocateBlocks(name,size, color)) {
+        File newFile = new File(directory,name, size, firstBlock,color);
+        files[fileCount++] = newFile; // Agregar archivo y aumentar el conteo
+    } else {
+        System.out.println("Espacio insuficiente o límite de archivos alcanzado.");
     }
+}
 
     public void deleteFile(String name) {
         for (int i = 0; i < fileCount; i++) {
             if (files[i] != null && files[i].getName().equals(name)) {
-                storageDisk.freeBlocks(files[i].getFirstBlock(), files[i].getSize());
+                storageDisk.freeBlocks(name,files[i].getFirstBlock(), files[i].getSize());
                 files[i] = null; // Marcar como eliminado
                 System.arraycopy(files, i + 1, files, i, fileCount - i - 1); // Shift left
                 files[--fileCount] = null; // Disminuir el contador de archivos

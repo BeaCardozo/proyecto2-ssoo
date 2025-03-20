@@ -7,16 +7,19 @@ import java.awt.Color;
  * @author beacardozo
  */
 public class File {
-    private String name;
+    public String name;
     private int size;
     private int firstBlock; 
     private Color fileColor;
+    private int[] addresses;
+    public Directory fileDirectory;
 
-    public File(String name, int size, int firstBlock) {
+    public File(Directory fileDirectory, String name, int size, int firstBlock, Color fileColor) {
         this.name = name;
         this.size = size;
         this.firstBlock = firstBlock;
-        this.fileColor = new Color((int)(Math.random() * 0x1000000));
+        this.fileColor = fileColor;
+        this.fileDirectory = fileDirectory;
     }
 
     public String getName() {
@@ -45,6 +48,10 @@ public class File {
     
     public Color getFileColor() {
         return fileColor;
+    }
+    
+    public Directory getFileDirectory(){
+        return fileDirectory;
     }
     
     @Override
