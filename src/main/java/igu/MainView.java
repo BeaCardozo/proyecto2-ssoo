@@ -9,12 +9,16 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.BorderFactory;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -253,8 +257,8 @@ public class MainView extends javax.swing.JFrame {
             File file = (File) userObject;
             writer.write(indent + "Name: " + file.getName() + 
                      ", Size: " + file.getSize() + 
-                     ", Color: " + file.getFileColor().toString() +
-                     ", type: file");
+                     ", type: file" +
+                     ", directory: " + file.getFileDirectory());
         } else if (userObject instanceof Directory) {
             Directory directory = (Directory) userObject;
             writer.write(indent + "Name: " + directory.getName() + "/" +
@@ -269,10 +273,84 @@ public class MainView extends javax.swing.JFrame {
    
    
    //Leer desde un TXT
-    
-    
+public void loadTreeFromTXT(String filePath) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Root");
+
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("Name: Root")) {
+                    rootNode = new DefaultMutableTreeNode(new Directory("Root"));
+                } else {
+                    addNodeToTree(rootNode, line.trim()); // Agregar nodos al árbol
+                }
+            }
+
+            StructureJTree.setModel(new DefaultTreeModel(rootNode));
+            JOptionPane.showMessageDialog(null, "Structure loaded from " + filePath, "Load Confirmation", JOptionPane.INFORMATION_MESSAGE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addNodeToTree(DefaultMutableTreeNode parentNode, String line) {
+        line = line.trim();
+        String[] parts = line.split(", ");
+        String name = parts[0].split(": ")[1]; // Nombre del archivo o directorio
 
     
+        if (line.contains("type: directory")) {
+            Directory newDir = new Directory(name.substring(0, name.length() - 1)); // Eliminar el '/' final
+            DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(newDir);
+            parentNode.add(newNode);
+            Directory currentDir = (Directory) ((DefaultMutableTreeNode) parentNode).getUserObject();
+            currentDir.addDirectory(newDir); // Agregar el directorio a la estructura de datos
+        } else if (line.contains("type: file")) {
+            int size = extractSize(parts);
+            if (size <= 0) {
+                JOptionPane.showMessageDialog(null, "File size must be greater than zero.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) parentNode.getParent();
+            if (size > storage.getAvailableBlocks()) {
+                JOptionPane.showMessageDialog(null, "StorageDisk does not have enough space to store this file.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            Color fileColor = new Color((int)(Math.random() * 0x1000000));
+            File newFile = new File(null, name, size, storage.getFirstBlock(), fileColor); 
+
+            if (storage.allocateBlocks(newFile.getName(), size, newFile.getFileColor())) {
+                DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(newFile);
+                parentNode.add(newNode);
+
+                Directory currentDir = (Directory) ((DefaultMutableTreeNode) parentNode).getUserObject();
+                currentDir.addFile(newFile); // Agregar el archivo a la estructura de datos
+                fileSystem.createFile(currentDir, name, size, storage.getFirstBlock(), fileColor); // Registrar el archivo en el sistema de archivos
+
+            // Actualizar el estado del disco y cualquier tabla, si es necesario
+            updateDiskStatus(storage.getBlocks(), storage.getBlockColors());
+            createAndShowTable();
+        } else {
+            JOptionPane.showMessageDialog(null, "Failed to allocate blocks for the file.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+    }
+}
+
+private int extractSize(String[] parts) {
+    for (String part : parts) {
+        if (part.startsWith("Size: ")) {
+            return Integer.parseInt(part.split(": ")[1]); // Extraer tamaño
+        }
+    }
+    return 0; // Retornar 0 si no se encuentra el tamaño
+} 
+   
+
+
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -365,6 +443,11 @@ public class MainView extends javax.swing.JFrame {
         LoadTxtButton.setText("Load TXT");
         LoadTxtButton.setBorderPainted(false);
         LoadTxtButton.setOpaque(true);
+        LoadTxtButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LoadTxtButtonActionPerformed(evt);
+            }
+        });
         JTreePanel.add(LoadTxtButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, 120, 30));
 
         MainPanel.add(JTreePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 460, 320));
@@ -637,6 +720,7 @@ public class MainView extends javax.swing.JFrame {
        clearJTree();
        clearFieldsAndComboBox();
        createAndShowTable();
+       LoadTxtButton.setEnabled(true);
     }//GEN-LAST:event_ClearJTreeButtonActionPerformed
 
     private void UpdateElementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateElementButtonActionPerformed
@@ -746,7 +830,19 @@ public class MainView extends javax.swing.JFrame {
         String filename = System.getProperty("user.dir") + "/fileSystem_results.txt";
         saveTreeToTXT(StructureJTree.getModel().getRoot(), filename, "");
         JOptionPane.showMessageDialog(null, "Structure saved in " + filename, "Save Confirmation", JOptionPane.INFORMATION_MESSAGE);
+        appendToDetails("The information has been saved in a TXT file | Date: " + getTimeStamp());
     }//GEN-LAST:event_SaveTxtFileActionPerformed
+
+    private void LoadTxtButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoadTxtButtonActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        int returnValue = fileChooser.showOpenDialog(null);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            java.io.File selectedFile = fileChooser.getSelectedFile();
+            loadTreeFromTXT(selectedFile.getAbsolutePath());
+            LoadTxtButton.setEnabled(false);
+            appendToDetails("A TXT file has been uploaded | Date: " + getTimeStamp());
+        }
+    }//GEN-LAST:event_LoadTxtButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
