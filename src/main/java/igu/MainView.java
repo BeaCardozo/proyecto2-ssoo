@@ -1,5 +1,4 @@
 package igu;
-import java.awt.Color;
 import com.mycompany.proyecto2.Directory;
 import com.mycompany.proyecto2.File;
 import com.mycompany.proyecto2.FileSystem;
