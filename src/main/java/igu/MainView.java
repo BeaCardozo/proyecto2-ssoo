@@ -241,8 +241,8 @@ public class MainView extends javax.swing.JFrame {
             File file = (File) userObject;
             writer.write(indent + "Name: " + file.getName() + 
                      ", Size: " + file.getSize() + 
-                     ", type: file" +
-                     ", directory: " + file.getFileDirectory());
+                     ", type: file" 
+                     );
         } else if (userObject instanceof Directory) {
             Directory directory = (Directory) userObject;
             writer.write(indent + "Name: " + directory.getName() + "/" +
