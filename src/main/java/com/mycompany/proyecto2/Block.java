@@ -3,27 +3,27 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.proyecto2;
-import java.awt.Color;
+
 /**
  *
  * @author Rodrigo
  */
 public class Block {
-    private int id;          // Identificador único del bloque
-    private Block next;      // Referencia al siguiente bloque en la lista enlazada
-    private boolean isFree;  // Indica si el bloque está libre o ocupado
-    private Color color;     // Color del bloque (para archivos)
+    private int fileId; 
+    private Block next; 
 
-    public Block(int id) {
-        this.id = id;
-        this.isFree = true; // Por defecto, el bloque está libre
-        this.color = Color.GREEN; // Por defecto, el color es verde (libre)
-        this.next = null;   // No hay siguiente bloque inicialmente
+    public Block(int id, String content) {
+        this.fileId = id;
+        this.next = null; 
     }
 
-    // Getters y setters
-    public int getId() {
-        return id;
+    // Getters and Setters
+    public int getFileId() {
+        return fileId;
+    }
+
+    public void setIFileId(int fileId) {
+        this.fileId = fileId;
     }
 
     public Block getNext() {
@@ -34,19 +34,10 @@ public class Block {
         this.next = next;
     }
 
-    public boolean isFree() {
-        return isFree;
-    }
-
-    public void setFree(boolean isFree) {
-        this.isFree = isFree;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
+    @Override
+    public String toString() {
+        return "Block{" +
+                "id=" + fileId +
+                '}';
     }
 }

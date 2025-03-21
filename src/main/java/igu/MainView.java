@@ -73,38 +73,29 @@ public class MainView extends javax.swing.JFrame {
         appendToDetails("FileSystem successfully started | Date: " + getTimeStamp());
     }
     
-    // Actualiza el estado de los bloques en el panel
     public void updateDiskStatus(String[] newBlocks, Color[] newBlockColors) {
     sdBlocksPanel.updateBlocks(newBlocks, newBlockColors); 
 }
     
-    //Limpiar el JTree
     private void clearJTree() {
-    // Limpiar el JTree
-    rootNode.removeAllChildren(); // Elimina todos los nodos hijos del nodo raíz
-    treeModel.reload(); // Recarga el modelo del JTree
-    StructureJTree.setModel(treeModel); // Actualiza el JTree
+    rootNode.removeAllChildren(); 
+    treeModel.reload(); 
+    StructureJTree.setModel(treeModel);
 
-    // Limpiar el sistema de archivos
-    fileSystem.clear(); // Elimina todos los archivos y directorios
+    fileSystem.clear(); 
 
-    // Limpiar el StorageDisk
-    storage.clear(); // Libera todos los bloques del disco
+    storage.clear(); 
 
-    // Restablecer los colores de los bloques a verde
-    Color[] blockColors = new Color[64]; // Crear un nuevo arreglo de colores
+    Color[] blockColors = new Color[64]; 
     for (int i = 0; i < blockColors.length; i++) {
-        blockColors[i] = Color.GREEN; // Todos los bloques libres se pintan en verde
+        blockColors[i] = Color.GREEN; 
     }
 
-    // Actualizar la interfaz gráfica
-    updateDiskStatus(storage.getBlocks(), blockColors); // Pasar el arreglo de bloques y colores al panel gráfico
+    updateDiskStatus(storage.getBlocks(), blockColors); 
 
-    // Mostrar mensaje de éxito
     appendToDetails("FileSystem & StorageDisk successfully cleaned | Date: " + getTimeStamp());
 }
-    
-    //Limpiar los campos
+
     private void clearFieldsAndComboBox() {
         ObjectNameTextField.setText(""); 
         ObjectSizeTextField.setText(""); 
@@ -143,7 +134,6 @@ public class MainView extends javax.swing.JFrame {
         });
     }
     
-    //Actualizacion de modo
     private void setupModeSelection() {
         AdminModeRadioButton.addActionListener(new ActionListener() {
             @Override
@@ -162,7 +152,6 @@ public class MainView extends javax.swing.JFrame {
         });
     }
     
-    //Actualizacion de modo pt.2 
     private void toggleControlPanel(boolean enabled) {
         ControlPanel.setEnabled(enabled);
         for (java.awt.Component c : ControlPanel.getComponents()) {
@@ -170,7 +159,6 @@ public class MainView extends javax.swing.JFrame {
         }
     }
     
-    //Actualizacion de campos
     private void updateFieldsByComboBox() {
         ObjectTypeComboBox.addActionListener(new ActionListener() {
             @Override
@@ -186,7 +174,6 @@ public class MainView extends javax.swing.JFrame {
         });
     }
     
-    //Actualizar File Allocation Table
     private void createAndShowTable() {
         String[] columnNames = {"Color", "File Name", "Assigned Blocks", "First Block Direction"};
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
@@ -227,19 +214,16 @@ public class MainView extends javax.swing.JFrame {
         }
     }
     
-    //Añadir texto al DetailsTextArea
     public void appendToDetails(String text) {
-        DetailsTextArea.append(text + "\n"); // Añadir texto nuevo
-        DetailsTextArea.setCaretPosition(DetailsTextArea.getDocument().getLength()); // Desplazarse al final
+        DetailsTextArea.append(text + "\n"); 
+        DetailsTextArea.setCaretPosition(DetailsTextArea.getDocument().getLength()); 
     }
     
-    //TimeStamp
     public String getTimeStamp() {
         String timestamp = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").format(new Date());
         return timestamp;
     }
-    
-    //Guadar en TXT
+
    public void saveTreeToTXT(Object node, String filePath, String indent) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             saveNodeToTXT(node, writer, indent);
@@ -271,8 +255,6 @@ public class MainView extends javax.swing.JFrame {
         }
     }
    
-   
-   //Leer desde un TXT
 public void loadTreeFromTXT(String filePath) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -282,7 +264,7 @@ public void loadTreeFromTXT(String filePath) {
                 if (line.startsWith("Name: Root")) {
                     rootNode = new DefaultMutableTreeNode(new Directory("Root"));
                 } else {
-                    addNodeToTree(rootNode, line.trim()); // Agregar nodos al árbol
+                    addNodeToTree(rootNode, line.trim());
                 }
             }
 
@@ -296,7 +278,7 @@ public void loadTreeFromTXT(String filePath) {
     private void addNodeToTree(DefaultMutableTreeNode parentNode, String line) {
         line = line.trim();
         String[] parts = line.split(", ");
-        String name = parts[0].split(": ")[1]; // Nombre del archivo o directorio
+        String name = parts[0].split(": ")[1]; 
 
     
         if (line.contains("type: directory")) {
@@ -304,7 +286,7 @@ public void loadTreeFromTXT(String filePath) {
             DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(newDir);
             parentNode.add(newNode);
             Directory currentDir = (Directory) ((DefaultMutableTreeNode) parentNode).getUserObject();
-            currentDir.addDirectory(newDir); // Agregar el directorio a la estructura de datos
+            currentDir.addDirectory(newDir); 
         } else if (line.contains("type: file")) {
             int size = extractSize(parts);
             if (size <= 0) {
@@ -326,10 +308,9 @@ public void loadTreeFromTXT(String filePath) {
                 parentNode.add(newNode);
 
                 Directory currentDir = (Directory) ((DefaultMutableTreeNode) parentNode).getUserObject();
-                currentDir.addFile(newFile); // Agregar el archivo a la estructura de datos
-                fileSystem.createFile(currentDir, name, size, storage.getFirstBlock(), fileColor); // Registrar el archivo en el sistema de archivos
+                currentDir.addFile(newFile); 
+                fileSystem.createFile(currentDir, name, size, storage.getFirstBlock(), fileColor); 
 
-            // Actualizar el estado del disco y cualquier tabla, si es necesario
             updateDiskStatus(storage.getBlocks(), storage.getBlockColors());
             createAndShowTable();
         } else {
@@ -342,10 +323,10 @@ public void loadTreeFromTXT(String filePath) {
 private int extractSize(String[] parts) {
     for (String part : parts) {
         if (part.startsWith("Size: ")) {
-            return Integer.parseInt(part.split(": ")[1]); // Extraer tamaño
+            return Integer.parseInt(part.split(": ")[1]); 
         }
     }
-    return 0; // Retornar 0 si no se encuentra el tamaño
+    return 0; 
 } 
    
 
@@ -630,7 +611,7 @@ private int extractSize(String[] parts) {
     }//GEN-LAST:event_ObjectNameTextFieldKeyTyped
 
     private void CreateElementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateElementButtonActionPerformed
-      // Obtener los datos del formulario
+        // Obtener los datos del formulario
     Color fileColor = new Color((int)(Math.random() * 0x1000000));
     String objectName = ObjectNameTextField.getText().trim();
     String objectSizeText = ObjectSizeTextField.getText().trim();
@@ -639,6 +620,25 @@ private int extractSize(String[] parts) {
     // Validar que el nombre no esté vacío
     if (objectName.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Please fill all the fields!", "Warning", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    // Validar que el nombre no exista
+    boolean nameExists = false;
+    for (File file : fileSystem.files) {
+        if (file != null && file.getName().equals(objectName)) {
+            nameExists = true;
+            break;
+        }
+    }
+    for (Directory directory : fileSystem.directories) {
+        if (directory != null && directory.getName().equals(objectName)) {
+            nameExists = true;
+            break;
+        }
+    }
+    if (nameExists) {
+        JOptionPane.showMessageDialog(this, "A file or directory with the name '" + objectName + "' already exists.", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
 
@@ -692,13 +692,13 @@ private int extractSize(String[] parts) {
         }
 
         // Crear un nuevo archivo con un color aleatorio
-        File newFile = new File(currentDir,objectName, objectSize, storage.getFirstBlock(),fileColor);
+        File newFile = new File(currentDir, objectName, objectSize, storage.getFirstBlock(), fileColor);
         // Asignar bloques en el StorageDisk con el color del archivo
-        if (storage.allocateBlocks(newFile.name,objectSize, newFile.getFileColor())) {
+        if (storage.allocateBlocks(newFile.name, objectSize, newFile.getFileColor())) {
             DefaultMutableTreeNode newFileNode = new DefaultMutableTreeNode(newFile);
             selectedNode.add(newFileNode); // Agregar el nodo al JTree
             currentDir.addFile(newFile); // Agregar el archivo al directorio actual
-            fileSystem.createFile(currentDir,objectName, objectSize, storage.getFirstBlock(), newFile.getFileColor()); // Registrar el archivo en el sistema de archivos
+            fileSystem.createFile(currentDir, objectName, objectSize, storage.getFirstBlock() - objectSize, newFile.getFileColor()); // Registrar el archivo en el sistema de archivos
 
             updateDiskStatus(storage.getBlocks(), storage.getBlockColors());
             createAndShowTable(); // Actualizar la tabla de asignación de archivos
@@ -726,51 +726,69 @@ private int extractSize(String[] parts) {
     private void UpdateElementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateElementButtonActionPerformed
       DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) StructureJTree.getLastSelectedPathComponent();
 
-        if (selectedNode != null && selectedNode.getUserObject() != null) {
-            Object userObject = selectedNode.getUserObject();
-            String newName = SelectedObjectNameTextField.getText().trim(); 
-            String sizeText = SelectedObjectSizeTextField.getText().trim(); 
+    if (selectedNode != null && selectedNode.getUserObject() != null) {
+        Object userObject = selectedNode.getUserObject();
+        String newName = SelectedObjectNameTextField.getText().trim();
+        String sizeText = SelectedObjectSizeTextField.getText().trim();
 
-            boolean isFile = userObject instanceof File;
-            boolean isDirectory = userObject instanceof Directory;
-
-            if (isDirectory) {
-                Directory currentDir = (Directory) userObject;
-                String currentName = currentDir.getName();
-                fileSystem.deleteDirectory(currentName);
-                currentDir.setName(newName); 
-                fileSystem.createDirectory(currentDir.getName());
-                    appendToDetails("Directory " + currentName + " updated to Name: " + newName + " | Date: " + getTimeStamp());
-                selectedNode.setUserObject(currentDir); 
-            } else if (isFile) {
-                if (sizeText.isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Size cannot be empty for files.", "Warning", JOptionPane.WARNING_MESSAGE);
-                    return; 
-                }                
-                int newSize = Integer.parseInt(sizeText); //REVISAR AQUI
-                if (newSize > 0 && newSize <= storage.getAvailableBlocks()) {
-                //Eliminar el archivo
-                    File FileToDelete = (File) userObject;
-                    Color fileColor = FileToDelete.getFileColor();
-                    Directory fileDirectory = FileToDelete.getFileDirectory();
-                    fileSystem.deleteFile(FileToDelete.getName());
-                    storage.freeBlocks(FileToDelete.getName(),FileToDelete.getFirstBlock(), FileToDelete.getSize()); // Liberar los bloques del archivo
-                //Crear el nuevo archivo
-                    File newFile = new File(fileDirectory,newName, newSize, storage.getFirstBlock(),fileColor);
-                    if (storage.allocateBlocks(newFile.name,newSize, newFile.getFileColor())) {
-                        DefaultMutableTreeNode newFileNode = new DefaultMutableTreeNode(newFile);
-                        //fileDirectory.addFile(newFile); // Agregar el archivo al directorio actual
-                        selectedNode.setUserObject(newFile); // Para archivos
-                        fileSystem.createFile(fileDirectory,newName, newSize, storage.getFirstBlock() - newSize, newFile.getFileColor()); // Registrar el archivo en el sistema de archivos
-                        updateDiskStatus(storage.getBlocks(),storage.getBlockColors());
-                        }
-                treeModel.reload();
-                createAndShowTable();
-                } else {
-                    JOptionPane.showMessageDialog(this, "Please select a valid object to update.", "Warning", JOptionPane.WARNING_MESSAGE);
-                    }
+        // Validar que el nuevo nombre no exista
+        boolean nameExists = false;
+        for (File file : fileSystem.files) {
+            if (file != null && file.getName().equals(newName)) {
+                nameExists = true;
+                break;
             }
         }
+        for (Directory directory : fileSystem.directories) {
+            if (directory != null && directory.getName().equals(newName)) {
+                nameExists = true;
+                break;
+            }
+        }
+        if (nameExists) {
+            JOptionPane.showMessageDialog(this, "A file or directory with the name '" + newName + "' already exists.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        boolean isFile = userObject instanceof File;
+        boolean isDirectory = userObject instanceof Directory;
+
+        if (isDirectory) {
+            Directory currentDir = (Directory) userObject;
+            String currentName = currentDir.getName();
+            fileSystem.deleteDirectory(currentName);
+            currentDir.setName(newName);
+            fileSystem.createDirectory(currentDir.getName());
+            appendToDetails("Directory " + currentName + " updated to Name: " + newName + " | Date: " + getTimeStamp());
+            selectedNode.setUserObject(currentDir);
+        } else if (isFile) {
+            if (sizeText.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Size cannot be empty for files.", "Warning", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            int newSize = Integer.parseInt(sizeText); // REVISAR AQUI
+            if (newSize > 0 && newSize <= storage.getAvailableBlocks()) {
+                // Eliminar el archivo
+                File FileToDelete = (File) userObject;
+                Color fileColor = FileToDelete.getFileColor();
+                Directory fileDirectory = FileToDelete.getFileDirectory();
+                fileSystem.deleteFile(FileToDelete.getName());
+                storage.freeBlocks(FileToDelete.getName(), FileToDelete.getFirstBlock(), FileToDelete.getSize()); // Liberar los bloques del archivo
+                // Crear el nuevo archivo
+                File newFile = new File(fileDirectory, newName, newSize, storage.getFirstBlock(), fileColor);
+                if (storage.allocateBlocks(newFile.name, newSize, newFile.getFileColor())) {
+                    DefaultMutableTreeNode newFileNode = new DefaultMutableTreeNode(newFile);
+                    selectedNode.setUserObject(newFile); // Para archivos
+                    fileSystem.createFile(fileDirectory, newName, newSize, storage.getFirstBlock() - newSize, newFile.getFileColor()); // Registrar el archivo en el sistema de archivos
+                    updateDiskStatus(storage.getBlocks(), storage.getBlockColors());
+                }
+                treeModel.reload();
+                createAndShowTable();
+            } else {
+                JOptionPane.showMessageDialog(this, "Please select a valid object to update.", "Warning", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    }
     }//GEN-LAST:event_UpdateElementButtonActionPerformed
 
     private void DeleteElementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteElementButtonActionPerformed
@@ -783,40 +801,39 @@ private int extractSize(String[] parts) {
                 "Are you sure you want to delete this item?", "Confirmation", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             if (userObject instanceof Directory) {
-                // Eliminar un directorio y todos sus archivos y subdirectorios
                 Directory dirToDelete = (Directory) userObject;
                 System.out.println("File count: "+fileSystem.fileCount);
-                for (int i = 0; i < fileSystem.fileCount; i++) {
-                    File file = fileSystem.files[i];
-                    fileSystem.deleteFile(file.getName());
-                    storage.freeBlocks(file.getName(),file.getFirstBlock(), file.getSize());
-                    updateDiskStatus(storage.getBlocks(), storage.getBlockColors());
-                    appendToDetails("* The Child File " + file.getName() + " has been deleted along with its parent directory | Date: " + getTimeStamp());
+                int fileCount = fileSystem.fileCount;
+                for (int i = fileCount - 1; i >= 0; i--) { 
+                    if(dirToDelete.getName().equals(fileSystem.files[i].getFileDirectory().getName())){
+                        File file = fileSystem.files[i];
+                        fileSystem.deleteFile(file.getName());
+                        storage.freeBlocks(file.getName(), file.getFirstBlock(), file.getSize());
+                        
+                        updateDiskStatus(storage.getBlocks(), storage.getBlockColors());
+                        appendToDetails("* The Child File " + file.getName() + " has been deleted along with its parent directory | Date: " + getTimeStamp());
+                    }
                 }
                 for (int j = 0; j < dirToDelete.subDirCount; j++) {
                     Directory subDir = dirToDelete.subdirectories[j];
                     fileSystem.deleteDirectory(subDir.getName());
                     appendToDetails("* Subdirectory " + subDir.getName() + " successfully deleted | Date: " + getTimeStamp());
                 }
-
                 String currentName = dirToDelete.getName();
                 fileSystem.deleteDirectory(currentName);
                 appendToDetails("Directory " + currentName + " successfully deleted | Date: " + getTimeStamp());
+
             } else {
-                // Eliminar un archivo
                 File FileToDelete = (File) userObject;
+                
                 fileSystem.deleteFile(FileToDelete.getName());
-                storage.freeBlocks(FileToDelete.getName(),FileToDelete.getFirstBlock(), FileToDelete.getSize()); // Liberar los bloques del archivo
-                // Actualizar la interfaz gráfica con los bloques y colores actualizados
+                
+                storage.freeBlocks(FileToDelete.getName(),FileToDelete.getFirstBlock(), FileToDelete.getSize());
+                
                 updateDiskStatus(storage.getBlocks(), storage.getBlockColors());
                 appendToDetails("File " + FileToDelete.getName() + " successfully deleted | Date: " + getTimeStamp()); 
-                for(int i =0;i<storage.getBlocks().length;i++){
-                System.out.println(storage.getBlocks()[i]);
-                }
-            System.out.println("------------------------------------------");
             }
 
-            // Actualizar la tabla de asignación de archivos y el JTree
             createAndShowTable();
             ((DefaultTreeModel) StructureJTree.getModel()).removeNodeFromParent(selectedNode);
             treeModel.reload();
